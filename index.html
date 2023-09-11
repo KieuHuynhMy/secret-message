@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <style></style>
+  </head>
+  <body>
+    <div class="row">
+      <h2 class="center-align">Secret Message App</h2>
+
+      <div class="col s12 m6 offset-m3">
+        <div class="card-panel hide" id="message-show">
+          <h4></h4>
+          <a href="index.html">Create your secret message</a>
+        </div>
+
+        <div class="card-panel" id="message-form">
+          <form>
+            <label for="title">Enter a Secret Message</label>
+            <input id="message-input" />
+            <button class="btn" type="submit">CREATE</button>
+          </form>
+        </div>
+
+        <div class="card-panel hide" id="link-form">
+          <h6>Share this link with a friend</h6>
+          <input id="link-output" />
+        </div>
+      </div>
+    </div>
+    <script>
+      // Show message
+      const { hash } = window.location;
+      const message = atob(hash.replace("#", ""));
+      if (message) {
+        document.querySelector("#message-form").classList.add("hide");
+        document.querySelector("#message-show").classList.remove("hide");
+        document.querySelector("h4").innerHTML = message;
+      }
+
+      document.querySelector("form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        // Toogle Form
+        document.querySelector("#message-form").classList.add("hide");
+        document.querySelector("#link-form").classList.remove("hide");
+
+        // Get value from form
+        let input = document.querySelector("#message-input").value;
+        let encrypted = btoa(input);
+
+        // Assign value to another link form
+        let link = document.querySelector("#link-output");
+        link.value = `${window.location.href}#${encrypted}`;
+        link.select(); // auto select entire link
+      });
+    </script>
+  </body>
+</html>
